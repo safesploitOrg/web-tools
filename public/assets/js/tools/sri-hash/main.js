@@ -59,7 +59,10 @@ function formatSize(bytes) {
 
 function showError(error) {
   clearOutput();
-  const message = error instanceof SriError ? error.message : 'An unexpected error occurred while processing the resource.';
+  const message =
+    error instanceof SriError
+      ? error.message
+      : 'An unexpected error occurred while processing the resource.';
   byId('error-message').textContent = message;
   byId('error-message').hidden = false;
   announce('Unable to generate an integrity hash.');
@@ -86,7 +89,9 @@ async function generate(event) {
     let resourceUrl;
     let context = '';
     if (mode === 'url') {
-      const result = await fetchResourceBytes(byId('resource-url').value, { signal: activeRequest.signal });
+      const result = await fetchResourceBytes(byId('resource-url').value, {
+        signal: activeRequest.signal,
+      });
       bytes = result.bytes;
       resourceUrl = result.url;
       context = 'HTTPS resource fetched with CORS and no credentials';
@@ -110,7 +115,8 @@ async function generate(event) {
     byId('snippet-group').hidden = !snippet;
     byId('snippet-unavailable').hidden = Boolean(snippet);
     byId('html-output').value = snippet;
-    byId('result-details').textContent = `${algorithm.toUpperCase().replace('SHA', 'SHA-')} · ${formatSize(bytes.byteLength)} · ${context}`;
+    byId('result-details').textContent =
+      `${algorithm.toUpperCase().replace('SHA', 'SHA-')} · ${formatSize(bytes.byteLength)} · ${context}`;
     byId('result-placeholder').hidden = true;
     byId('result-content').hidden = false;
     announce('Integrity hash generated. You can copy the result.');

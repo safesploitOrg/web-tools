@@ -1,5 +1,10 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { fetchResourceBytes, readBoundedResponse, readFileBytes, readTextBytes } from '../../../public/assets/js/tools/sri-hash/input.js';
+import {
+  fetchResourceBytes,
+  readBoundedResponse,
+  readFileBytes,
+  readTextBytes,
+} from '../../../public/assets/js/tools/sri-hash/input.js';
 
 afterEach(() => vi.useRealTimers());
 
@@ -17,26 +22,40 @@ describe('local inputs', () => {
   });
   it('refuses oversized files before calling arrayBuffer', async () => {
     const spy = vi.fn();
-    await expect(readFileBytes({ size: 12, arrayBuffer: spy }, 10)).rejects.toMatchObject({ code: 'TOO_LARGE' });
+    await expect(readFileBytes({ size: 12, arrayBuffer: spy }, 10)).rejects.toMatchObject({
+      code: 'TOO_LARGE',
+    });
     expect(spy).not.toHaveBeenCalled();
   });
 });
 
 describe('bounded network streaming', () => {
   it('reads a valid CORS response with strict fetch options', async () => {
-    const fetchImpl = vi.fn(async () => new Response(new Uint8Array([1, 2, 3]), {
-      headers: { 'content-type': 'text/javascript', 'content-length': '3' },
-    }));
+    const fetchImpl = vi.fn(
+      async () =>
+        new Response(new Uint8Array([1, 2, 3]), {
+          headers: { 'content-type': 'text/javascript', 'content-length': '3' },
+        }),
+    );
     const result = await fetchResourceBytes('https://cdn.example.org/a.js', { fetchImpl });
     expect(Array.from(result.bytes)).toEqual([1, 2, 3]);
     expect(result.contentType).toBe('text/javascript');
-    expect(fetchImpl).toHaveBeenCalledWith('https://cdn.example.org/a.js', expect.objectContaining({
-      redirect: 'error', credentials: 'omit', mode: 'cors', referrerPolicy: 'no-referrer', cache: 'no-store',
-    }));
+    expect(fetchImpl).toHaveBeenCalledWith(
+      'https://cdn.example.org/a.js',
+      expect.objectContaining({
+        redirect: 'error',
+        credentials: 'omit',
+        mode: 'cors',
+        referrerPolicy: 'no-referrer',
+        cache: 'no-store',
+      }),
+    );
   });
 
   it('rejects non-2xx HTTP statuses', async () => {
-    await expect(readBoundedResponse(new Response('nope', { status: 404 }))).rejects.toMatchObject({ code: 'HTTP_FAILURE' });
+    await expect(readBoundedResponse(new Response('nope', { status: 404 }))).rejects.toMatchObject({
+      code: 'HTTP_FAILURE',
+    });
   });
 
   it('blocks an excessive Content-Length early', async () => {
@@ -46,41 +65,65 @@ describe('bounded network streaming', () => {
 
   it('blocks an oversized streamed response with no Content-Length', async () => {
     const body = new ReadableStream({
-      start(controller) { controller.enqueue(new Uint8Array([1, 2])); controller.enqueue(new Uint8Array([3, 4])); },
+      start(controller) {
+        controller.enqueue(new Uint8Array([1, 2]));
+        controller.enqueue(new Uint8Array([3, 4]));
+      },
     });
-    await expect(readBoundedResponse({ ok: true, headers: new Headers(), body }, 3))
-      .rejects.toMatchObject({ code: 'TOO_LARGE' });
+    await expect(
+      readBoundedResponse({ ok: true, headers: new Headers(), body }, 3),
+    ).rejects.toMatchObject({ code: 'TOO_LARGE' });
   });
 
   it('does not fetch any disallowed target', async () => {
     const fetchImpl = vi.fn();
-    await expect(fetchResourceBytes('https://127.0.0.1/a', { fetchImpl }))
-      .rejects.toMatchObject({ code: 'BLOCKED_TARGET' });
+    await expect(fetchResourceBytes('https://127.0.0.1/a', { fetchImpl })).rejects.toMatchObject({
+      code: 'BLOCKED_TARGET',
+    });
     expect(fetchImpl).not.toHaveBeenCalled();
   });
 
   it('reports redirect refusal or CORS failures as network errors', async () => {
-    const fetchImpl = vi.fn(async () => { throw new TypeError('Failed to fetch'); });
-    await expect(fetchResourceBytes('https://cdn.example.org/x.js', { fetchImpl }))
-      .rejects.toMatchObject({ code: 'NETWORK' });
+    const fetchImpl = vi.fn(async () => {
+      throw new TypeError('Failed to fetch');
+    });
+    await expect(
+      fetchResourceBytes('https://cdn.example.org/x.js', { fetchImpl }),
+    ).rejects.toMatchObject({ code: 'NETWORK' });
   });
 
   it('supports cancellation', async () => {
     const request = new AbortController();
-    const fetchImpl = (_url, options) => new Promise((_resolve, reject) => {
-      options.signal.addEventListener('abort', () => reject(new DOMException('cancelled', 'AbortError')), { once: true });
+    const fetchImpl = (_url, options) =>
+      new Promise((_resolve, reject) => {
+        options.signal.addEventListener(
+          'abort',
+          () => reject(new DOMException('cancelled', 'AbortError')),
+          { once: true },
+        );
+      });
+    const result = fetchResourceBytes('https://cdn.example.org/a.js', {
+      fetchImpl,
+      signal: request.signal,
     });
-    const result = fetchResourceBytes('https://cdn.example.org/a.js', { fetchImpl, signal: request.signal });
     request.abort();
     await expect(result).rejects.toMatchObject({ code: 'CANCELLED' });
   });
 
   it('reports timeouts distinctly from user cancellations', async () => {
     vi.useFakeTimers();
-    const fetchImpl = (_url, options) => new Promise((_resolve, reject) => {
-      options.signal.addEventListener('abort', () => reject(new DOMException('timeout', 'AbortError')), { once: true });
+    const fetchImpl = (_url, options) =>
+      new Promise((_resolve, reject) => {
+        options.signal.addEventListener(
+          'abort',
+          () => reject(new DOMException('timeout', 'AbortError')),
+          { once: true },
+        );
+      });
+    const pending = fetchResourceBytes('https://cdn.example.org/a.js', {
+      fetchImpl,
+      timeoutMs: 200,
     });
-    const pending = fetchResourceBytes('https://cdn.example.org/a.js', { fetchImpl, timeoutMs: 200 });
     const assertion = expect(pending).rejects.toMatchObject({ code: 'TIMEOUT' });
     await vi.advanceTimersByTimeAsync(200);
     await assertion;

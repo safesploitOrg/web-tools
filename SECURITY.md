@@ -17,18 +17,18 @@ Until a repository security-advisory channel is configured, report vulnerabiliti
 
 ## ⚠️ Known limitations and residual risks
 
-| Risk | Current position |
-| --- | --- |
-| CORS failures and opaque responses | Browser refuses to expose bytes; download a trusted file and hash it locally instead |
-| Redirected CDN URLs | Redirects are blocked to avoid unintentionally contacting another host |
-| DNS names resolving to private addresses | The validator cannot reliably resolve/prevent this; user-initiated URL fetch still has residual private-network request risk |
-| Source changing after hashing | Use immutable, versioned URLs; do not assume the same bytes will be served later |
-| Browser-specific or personalised responses | Token might not match another browser or client |
-| Browser request with query token | Query strings can contain sensitive values; the target host sees the full URL, and no application logs are retained |
-| Clipboard permissions | Manual select/copy fallback is available |
-| GitHub Pages HTTP headers | Meta-CSP cannot provide all response-header protections |
-| Browser E2E omitted from CI | Known **unmet SFW requirement**; release status not yet approved |
-| Dependency-based checks unavailable locally | `npm ci`, Vitest, lint, HTML, audit and secret scanning have not been independently verified |
+| Risk                                        | Current position                                                                                                             |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| CORS failures and opaque responses          | Browser refuses to expose bytes; download a trusted file and hash it locally instead                                         |
+| Redirected CDN URLs                         | Redirects are blocked to avoid unintentionally contacting another host                                                       |
+| DNS names resolving to private addresses    | The validator cannot reliably resolve/prevent this; user-initiated URL fetch still has residual private-network request risk |
+| Source changing after hashing               | Use immutable, versioned URLs; do not assume the same bytes will be served later                                             |
+| Browser-specific or personalised responses  | Token might not match another browser or client                                                                              |
+| Browser request with query token            | Query strings can contain sensitive values; the target host sees the full URL, and no application logs are retained          |
+| Clipboard permissions                       | Manual select/copy fallback is available                                                                                     |
+| GitHub Pages HTTP headers                   | Meta-CSP cannot provide all response-header protections                                                                      |
+| Browser E2E omitted from CI                 | Known **unmet SFW requirement**; release status not yet approved                                                             |
+| Dependency-based checks unavailable locally | `npm ci`, Vitest, lint, HTML, audit and secret scanning have not been independently verified                                 |
 
 ## 🧪 Release controls
 
@@ -47,3 +47,9 @@ The authoring assistant has not performed or authorised a push, merge, release, 
 - [Threat model](docs/threat-model.md)
 - [Test evidence](docs/testing.md)
 - [SFW Engineering Standard v1.1](docs/engineering/SFW_AI_ENGINEERING_STANDARD.md)
+
+## CI secret and dependency scan (v0.1.1)
+
+The licensed `gitleaks-action` is replaced by the standalone Gitleaks CLI v8.30.1. CI verifies the Linux x64 release archive against the SHA-256 published by the upstream GitHub release before executing `gitleaks git --log-opts='--all' --redact` against full Git history. This is a **blocking** CI gate, not a decision to disable secret scanning. External release downloads and GitHub Actions availability are additional CI dependencies.
+
+Vitest `^5.1.1` and HTML Validate `^11.21.1` replace previously audited vulnerable dependency lines. The full transitive graph remains unverified until GitHub Actions resolves packages, runs `npm audit --audit-level=high`, and uploads the lockfile for review. A successful bootstrap audit does not constitute a reproducible release until the lock is committed and retested.

@@ -51,14 +51,14 @@ Supporting documents, the repository agent instructions and SFW v1.1 standard li
 
 ## 🔑 Module contracts
 
-| Module | Responsibility | Trust boundary |
-| --- | --- | --- |
-| `validate.js` | HTTPS URL policy, local-address literal rejection, byte limits and SHA allowlist | Untrusted input |
-| `input.js` | Read local file, encode UTF-8, fetch remote streams without credentials | Browser network and local file APIs |
-| `digest.js` | Generate SHA-256/384/512 token via Web Crypto, preserve byte offsets | Exact resource bytes |
-| `snippets.js` | Produce inert HTML strings, safely escape URL attributes | User-supplied URL and integrity token |
-| `main.js` | UI state, tabs, cancellation, copy actions and accessible feedback | Untrusted strings to DOM |
-| `clipboard.js` | Copy plain text only via secure clipboard | Clipboard permission |
+| Module         | Responsibility                                                                   | Trust boundary                        |
+| -------------- | -------------------------------------------------------------------------------- | ------------------------------------- |
+| `validate.js`  | HTTPS URL policy, local-address literal rejection, byte limits and SHA allowlist | Untrusted input                       |
+| `input.js`     | Read local file, encode UTF-8, fetch remote streams without credentials          | Browser network and local file APIs   |
+| `digest.js`    | Generate SHA-256/384/512 token via Web Crypto, preserve byte offsets             | Exact resource bytes                  |
+| `snippets.js`  | Produce inert HTML strings, safely escape URL attributes                         | User-supplied URL and integrity token |
+| `main.js`      | UI state, tabs, cancellation, copy actions and accessible feedback               | Untrusted strings to DOM              |
+| `clipboard.js` | Copy plain text only via secure clipboard                                        | Clipboard permission                  |
 
 ### Remote URL policy
 

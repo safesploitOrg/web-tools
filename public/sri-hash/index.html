@@ -1,16 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en-GB">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Generate SHA-256, SHA-384 and SHA-512 SRI integrity attributes locally in your browser.">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src https:; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
-    <meta name="referrer" content="no-referrer">
-    <meta name="color-scheme" content="dark">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Generate SHA-256, SHA-384 and SHA-512 SRI integrity attributes locally in your browser."
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src https:; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="color-scheme" content="dark" />
     <title>SRI Hash Generator · Web Tools</title>
-    <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="../assets/css/site.css">
-    <link rel="stylesheet" href="../assets/css/tools.css">
+    <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../assets/css/site.css" />
+    <link rel="stylesheet" href="../assets/css/tools.css" />
     <script type="module" src="../assets/js/tools/sri-hash/main.js"></script>
     <script type="module" src="../assets/js/shared/footer.js"></script>
   </head>
@@ -18,62 +24,277 @@
     <a href="#main" class="skip-link">Skip to main content</a>
     <div class="site-shell">
       <header class="site-header">
-        <a class="brand" href="../" aria-label="Web Tools home"><span class="brand-mark" aria-hidden="true">&gt;_</span><span><strong>Web Tools</strong><small>by safesploitOrg</small></span></a>
+        <a class="brand" href="../" aria-label="Web Tools home"
+          ><span class="brand-mark" aria-hidden="true">&gt;_</span
+          ><span><strong>Web Tools</strong><small>by safesploitOrg</small></span></a
+        >
       </header>
       <main id="main">
-        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../">Web Tools</a><span aria-hidden="true">/</span><span aria-current="page">SRI Hash Generator</span></nav>
-        <section class="tool-intro" aria-labelledby="page-title"><p class="eyebrow">SECURITY · INTEGRITY</p><h1 id="page-title">SRI Hash Generator<span class="heading-accent">.</span></h1><p>Generate a Subresource Integrity token from the exact bytes of a script or stylesheet. Use it to detect unexpected changes when a browser loads that resource.</p></section>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../">Web Tools</a><span aria-hidden="true">/</span
+          ><span aria-current="page">SRI Hash Generator</span>
+        </nav>
+        <section class="tool-intro" aria-labelledby="page-title">
+          <p class="eyebrow">SECURITY · INTEGRITY</p>
+          <h1 id="page-title">SRI Hash Generator<span class="heading-accent">.</span></h1>
+          <p>
+            Generate a Subresource Integrity token from the exact bytes of a script or stylesheet.
+            Use it to detect unexpected changes when a browser loads that resource.
+          </p>
+        </section>
         <div class="workbench">
-          <section class="workbench-card" aria-labelledby="input-heading"><div class="card-head"><span class="card-step">01</span><div><h2 id="input-heading">Resource input</h2><p>Choose how to provide the content to hash.</p></div></div>
+          <section class="workbench-card" aria-labelledby="input-heading">
+            <div class="card-head">
+              <span class="card-step">01</span>
+              <div>
+                <h2 id="input-heading">Resource input</h2>
+                <p>Choose how to provide the content to hash.</p>
+              </div>
+            </div>
             <form id="sri-form" novalidate>
               <div class="tabs" role="tablist" aria-label="Input source">
-                <button type="button" class="tab is-selected" id="tab-url" role="tab" aria-selected="true" aria-controls="panel-url" tabindex="0" data-mode="url">Resource URL</button>
-                <button type="button" class="tab" id="tab-file" role="tab" aria-selected="false" aria-controls="panel-file" tabindex="-1" data-mode="file">Local file</button>
-                <button type="button" class="tab" id="tab-text" role="tab" aria-selected="false" aria-controls="panel-text" tabindex="-1" data-mode="text">Paste text</button>
+                <button
+                  type="button"
+                  class="tab is-selected"
+                  id="tab-url"
+                  role="tab"
+                  aria-selected="true"
+                  aria-controls="panel-url"
+                  tabindex="0"
+                  data-mode="url"
+                >
+                  Resource URL
+                </button>
+                <button
+                  type="button"
+                  class="tab"
+                  id="tab-file"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="panel-file"
+                  tabindex="-1"
+                  data-mode="file"
+                >
+                  Local file
+                </button>
+                <button
+                  type="button"
+                  class="tab"
+                  id="tab-text"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="panel-text"
+                  tabindex="-1"
+                  data-mode="text"
+                >
+                  Paste text
+                </button>
               </div>
-              <div class="tab-panel" id="panel-url" role="tabpanel" aria-labelledby="tab-url" data-panel="url">
+              <div
+                class="tab-panel"
+                id="panel-url"
+                role="tabpanel"
+                aria-labelledby="tab-url"
+                data-panel="url"
+              >
                 <label for="resource-url">HTTPS resource URL</label>
-                <input id="resource-url" type="url" inputmode="url" spellcheck="false" autocomplete="off" placeholder="https://cdn.example.org/library.min.js">
-                <p class="field-hint">The browser fetches this URL only when you select Generate. The server must permit CORS; redirects are blocked.</p>
+                <input
+                  id="resource-url"
+                  type="url"
+                  inputmode="url"
+                  spellcheck="false"
+                  autocomplete="off"
+                  placeholder="https://cdn.example.org/library.min.js"
+                />
+                <p class="field-hint">
+                  The browser fetches this URL only when you select Generate. The server must permit
+                  CORS; redirects are blocked.
+                </p>
               </div>
-              <div class="tab-panel" id="panel-file" role="tabpanel" aria-labelledby="tab-file" data-panel="file" hidden>
+              <div
+                class="tab-panel"
+                id="panel-file"
+                role="tabpanel"
+                aria-labelledby="tab-file"
+                data-panel="file"
+                hidden
+              >
                 <label for="resource-file">Choose a file to hash</label>
-                <input id="resource-file" type="file" aria-describedby="file-hint">
-                <p class="field-hint" id="file-hint">The file stays on your device. Maximum size: 20 MiB.</p>
+                <input id="resource-file" type="file" aria-describedby="file-hint" />
+                <p class="field-hint" id="file-hint">
+                  The file stays on your device. Maximum size: 20 MiB.
+                </p>
               </div>
-              <div class="tab-panel" id="panel-text" role="tabpanel" aria-labelledby="tab-text" data-panel="text" hidden>
+              <div
+                class="tab-panel"
+                id="panel-text"
+                role="tabpanel"
+                aria-labelledby="tab-text"
+                data-panel="text"
+                hidden
+              >
                 <label for="resource-text">Source text</label>
-                <textarea id="resource-text" rows="5" spellcheck="false" placeholder="Paste the exact JavaScript or CSS content here..."></textarea>
-                <p class="field-hint">Encoded as UTF-8. Textarea line-ending normalisation may produce a different hash from the original file.</p>
+                <textarea
+                  id="resource-text"
+                  rows="5"
+                  spellcheck="false"
+                  placeholder="Paste the exact JavaScript or CSS content here..."
+                ></textarea>
+                <p class="field-hint">
+                  Encoded as UTF-8. Textarea line-ending normalisation may produce a different hash
+                  from the original file.
+                </p>
               </div>
               <div class="subtle-divider"></div>
-              <fieldset class="field-group"><legend>Hash algorithm</legend><div class="choice-row"><label class="choice"><input type="radio" name="algorithm" value="sha256"><span>SHA-256</span></label><label class="choice"><input type="radio" name="algorithm" value="sha384" checked><span>SHA-384 <em>Default</em></span></label><label class="choice"><input type="radio" name="algorithm" value="sha512"><span>SHA-512</span></label></div></fieldset>
+              <fieldset class="field-group">
+                <legend>Hash algorithm</legend>
+                <div class="choice-row">
+                  <label class="choice"
+                    ><input type="radio" name="algorithm" value="sha256" /><span
+                      >SHA-256</span
+                    ></label
+                  ><label class="choice"
+                    ><input type="radio" name="algorithm" value="sha384" checked /><span
+                      >SHA-384 <em>Default</em></span
+                    ></label
+                  ><label class="choice"
+                    ><input type="radio" name="algorithm" value="sha512" /><span
+                      >SHA-512</span
+                    ></label
+                  >
+                </div>
+              </fieldset>
               <div class="subtle-divider"></div>
-              <fieldset class="field-group"><legend>HTML resource type</legend><div class="choice-row"><label class="choice"><input type="radio" name="resource-type" value="script" checked><span>JavaScript</span></label><label class="choice"><input type="radio" name="resource-type" value="style"><span>Stylesheet (CSS)</span></label></div><p class="field-hint">Used only when building an HTML snippet. The integrity hash itself is identical for the same bytes.</p></fieldset>
-              <div class="optional-url" id="snippet-url-row" hidden><label for="snippet-url">Hosted resource URL <span class="optional-label">Optional</span></label><input id="snippet-url" type="url" inputmode="url" spellcheck="false" autocomplete="off" placeholder="https://cdn.example.org/library.min.js"><p class="field-hint">For local files or text, provide the eventual public HTTPS URL to generate a snippet. Otherwise, only the integrity token is shown.</p></div>
-              <div class="form-actions"><button class="button button-primary" type="submit" id="generate-button"><span aria-hidden="true">#</span> Generate integrity hash</button><button class="button button-secondary" type="button" id="cancel-button" hidden>Cancel request</button></div>
+              <fieldset class="field-group">
+                <legend>HTML resource type</legend>
+                <div class="choice-row">
+                  <label class="choice"
+                    ><input type="radio" name="resource-type" value="script" checked /><span
+                      >JavaScript</span
+                    ></label
+                  ><label class="choice"
+                    ><input type="radio" name="resource-type" value="style" /><span
+                      >Stylesheet (CSS)</span
+                    ></label
+                  >
+                </div>
+                <p class="field-hint">
+                  Used only when building an HTML snippet. The integrity hash itself is identical
+                  for the same bytes.
+                </p>
+              </fieldset>
+              <div class="optional-url" id="snippet-url-row" hidden>
+                <label for="snippet-url"
+                  >Hosted resource URL <span class="optional-label">Optional</span></label
+                ><input
+                  id="snippet-url"
+                  type="url"
+                  inputmode="url"
+                  spellcheck="false"
+                  autocomplete="off"
+                  placeholder="https://cdn.example.org/library.min.js"
+                />
+                <p class="field-hint">
+                  For local files or text, provide the eventual public HTTPS URL to generate a
+                  snippet. Otherwise, only the integrity token is shown.
+                </p>
+              </div>
+              <div class="form-actions">
+                <button class="button button-primary" type="submit" id="generate-button">
+                  <span aria-hidden="true">#</span> Generate integrity hash</button
+                ><button class="button button-secondary" type="button" id="cancel-button" hidden>
+                  Cancel request
+                </button>
+              </div>
             </form>
           </section>
-          <section class="workbench-card result-card" aria-labelledby="output-heading"><div class="card-head"><span class="card-step">02</span><div><h2 id="output-heading">Your output</h2><p>Copy the token or ready-to-use HTML.</p></div></div>
-            <div class="result-placeholder" id="result-placeholder"><span aria-hidden="true">{ # }</span><h3>Ready when you are</h3><p>Your generated integrity token will appear here. No content is sent to our servers.</p></div>
+          <section class="workbench-card result-card" aria-labelledby="output-heading">
+            <div class="card-head">
+              <span class="card-step">02</span>
+              <div>
+                <h2 id="output-heading">Your output</h2>
+                <p>Copy the token or ready-to-use HTML.</p>
+              </div>
+            </div>
+            <div class="result-placeholder" id="result-placeholder">
+              <span aria-hidden="true">{ # }</span>
+              <h3>Ready when you are</h3>
+              <p>
+                Your generated integrity token will appear here. No content is sent to our servers.
+              </p>
+            </div>
             <div id="result-content" hidden>
-              <div class="result-field"><div class="result-label"><label for="integrity-output">Integrity token</label><button type="button" class="button-copy" id="copy-integrity">Copy</button></div><textarea readonly id="integrity-output" rows="3" spellcheck="false"></textarea></div>
-              <div class="result-field" id="snippet-group" hidden><div class="result-label"><label for="html-output">HTML snippet</label><button type="button" class="button-copy" id="copy-snippet">Copy</button></div><textarea readonly id="html-output" rows="5" spellcheck="false"></textarea></div>
-              <p class="field-hint" id="snippet-unavailable" hidden>To generate an HTML snippet, supply a hosted HTTPS resource URL.</p>
+              <div class="result-field">
+                <div class="result-label">
+                  <label for="integrity-output">Integrity token</label
+                  ><button type="button" class="button-copy" id="copy-integrity">Copy</button>
+                </div>
+                <textarea readonly id="integrity-output" rows="3" spellcheck="false"></textarea>
+              </div>
+              <div class="result-field" id="snippet-group" hidden>
+                <div class="result-label">
+                  <label for="html-output">HTML snippet</label
+                  ><button type="button" class="button-copy" id="copy-snippet">Copy</button>
+                </div>
+                <textarea readonly id="html-output" rows="5" spellcheck="false"></textarea>
+              </div>
+              <p class="field-hint" id="snippet-unavailable" hidden>
+                To generate an HTML snippet, supply a hosted HTTPS resource URL.
+              </p>
               <p class="result-details" id="result-details"></p>
-              <div class="notice notice-warning"><strong>Integrity is not trust.</strong> SRI confirms that loaded bytes match this token. It does not guarantee that the source code is safe or that the original content was trustworthy.</div>
+              <div class="notice notice-warning">
+                <strong>Integrity is not trust.</strong> SRI confirms that loaded bytes match this
+                token. It does not guarantee that the source code is safe or that the original
+                content was trustworthy.
+              </div>
             </div>
             <p class="notice notice-error" id="error-message" role="alert" hidden></p>
             <p class="status-message" id="operation-status" role="status" aria-live="polite"></p>
           </section>
         </div>
-        <section class="help-grid" aria-label="Usage notes"><div class="help-card"><h2>🔒 Browser-local by default</h2><p>File and text content never leave your device. URL mode makes a request directly from your browser to the chosen host, without sending credentials.</p></div><div class="help-card"><h2>🌐 Remote URL limitations</h2><p>Only HTTPS URLs are accepted. CORS must allow the browser to read the resource, and HTTP redirects are blocked. For other URLs, download the file and hash it locally.</p></div><div class="help-card"><h2>📌 Pin a specific version</h2><p>Use versioned, immutable resource URLs whenever possible. Browser-specific or changing assets may not match the hash at a later time.</p></div></section>
-        <p class="reference-link">More on <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Subresource_Integrity" target="_blank" rel="noopener noreferrer">Subresource Integrity (MDN) <span aria-hidden="true">↗</span></a></p>
+        <section class="help-grid" aria-label="Usage notes">
+          <div class="help-card">
+            <h2>🔒 Browser-local by default</h2>
+            <p>
+              File and text content never leave your device. URL mode makes a request directly from
+              your browser to the chosen host, without sending credentials.
+            </p>
+          </div>
+          <div class="help-card">
+            <h2>🌐 Remote URL limitations</h2>
+            <p>
+              Only HTTPS URLs are accepted. CORS must allow the browser to read the resource, and
+              HTTP redirects are blocked. For other URLs, download the file and hash it locally.
+            </p>
+          </div>
+          <div class="help-card">
+            <h2>📌 Pin a specific version</h2>
+            <p>
+              Use versioned, immutable resource URLs whenever possible. Browser-specific or changing
+              assets may not match the hash at a later time.
+            </p>
+          </div>
+        </section>
+        <p class="reference-link">
+          More on
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Subresource_Integrity"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Subresource Integrity (MDN) <span aria-hidden="true">↗</span></a
+          >
+        </p>
       </main>
       <footer class="site-footer">
         <span class="footer-copyright">© <span data-current-year>2026</span> safesploitOrg</span>
-        <a class="footer-github" href="https://github.com/safesploitOrg/web-tools" target="_blank" rel="noopener noreferrer" aria-label="Web Tools repository on GitHub">
-          <img src="../assets/images/github.svg" width="24" height="24" alt="">
+        <a
+          class="footer-github"
+          href="https://github.com/safesploitOrg/web-tools"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Web Tools repository on GitHub"
+        >
+          <img src="../assets/images/github.svg" width="24" height="24" alt="" />
         </a>
       </footer>
     </div>

@@ -15,6 +15,10 @@ export default [
   },
   {
     files: ['tests/**/*.js', 'scripts/**/*.mjs', 'eslint.config.js'],
-    languageOptions: { ecmaVersion: 'latest', sourceType: 'module', globals: { ...globals.node, ...globals.browser } },
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: { ...globals.node, ...globals.browser },
+    },
   },
 ];

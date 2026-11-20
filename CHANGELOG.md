@@ -4,6 +4,19 @@ All notable changes to Web Tools will be documented in this file. Format follows
 
 ## [Unreleased]
 
+### v0.1.1 — CI quality and security hardening (20 November 2026)
+
+- Apply the actual Prettier repair patch from GitHub Actions across HTML, CSS, JavaScript, tests and documentation; retain formatting as a blocking gate.
+- Replace the invalid control-character regex with equivalent code-point validation, covered by added control-character rejection vectors.
+- Correct HTML DOCTYPE casing and remove the invalid label on a presentational tool card without suppressing validation rules.
+- Upgrade Vitest to `^5.1.1` and HTML Validate to `^11.21.1` to remediate the previously reported vulnerable transitive dependency chains.
+- Replace the organisation-licensed `gitleaks-action` with the stand-alone Gitleaks CLI `v8.30.1`, pinned and SHA-256 verified, scanning complete Git history as a blocking security gate.
+- Increment the source candidate version to `0.1.1`, retain independent CI checks and preserve manual-release gates; Playwright remains outside CI with its SFW exception unapproved.
+
+**Dependency-lock gap:** npm registry resolution is unavailable in the authoring environment. CI temporarily generates and uploads a resolved `package-lock.json`; the file must be reviewed and committed before any release. A CI bootstrap lock is not a reproducible committed dependency lock.
+
+**Release status:** Not released; this approval covers a draft PR only, not merging or deploying.
+
 ### CI quality hardening (20 November 2026)
 
 - Keep Prettier formatting a blocking CI check. Remove unsupported `*.svg` files from its glob rather than suppressing formatter errors.
@@ -16,14 +29,12 @@ All notable changes to Web Tools will be documented in this file. Format follows
 
 **Verification gap:** npm registry access is blocked in the authoring environment, so the full Prettier pass and dependency-based checks remain unverified. After applying this revision, run the local helper or download and apply the proposed formatting patch from CI; the original source still needs a canonical formatter pass.
 
-
 ### CI / dependency locking
 
 - Add `scripts/relock.sh` to generate, verify and locally test the complete `package-lock.json`, ready for review and commit.
 - Avoid the `setup-node` npm-cache lockfile failure by allowing a **temporary, explicitly warned** missing-lock bootstrap in quality/security jobs.
 - Export the resolved `package-lock.json` as a downloadable GitHub Actions artefact for review/commit.
 - Block Pages releases until a real, non-empty `package-lock.json` is committed; CI bootstrap is not a substitute for a committed dependency lock.
-
 
 ### Added
 

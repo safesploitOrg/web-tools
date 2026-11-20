@@ -14,14 +14,14 @@
 
 ## 🧭 Phase status
 
-| Phase | Status | Evidence and remaining work |
-| --- | --- | --- |
-| 0 — Design | **COMPLETE** | v0.2 plan adopted for local implementation; path and GitHub Pages decisions recorded |
-| 1 — Foundation | **IMPLEMENTED LOCALLY; VERIFICATION PARTIAL** | Catalogue, SRI page, assets, docs, GitHub Actions, scripts. npm-based checks remain unverified |
-| 2 — SRI engine | **IMPLEMENTED LOCALLY; TESTS PARTIAL** | SHA algorithms, URL/file/text adapters, bounded stream, validation, snippets; Node smoke PASS; Vitest NOT RUN |
-| 3 — UI and integration | **IMPLEMENTED LOCALLY; BROWSER TEST BLOCKED** | Tabs, copy, cancellation, responsive styles; browser environment returned `ERR_BLOCKED_BY_ADMINISTRATOR` |
-| 4 — Security review | **INCOMPLETE / RELEASE BLOCKED** | Lockfile, formatting, CI execution, general SAST, browser evidence/exception and owner T2 review pending |
-| 5 — Public GitHub Pages release | **NOT AUTHORISED / NOT STARTED** | Requires explicit release permission, passing gates and manual dispatch on `main` |
+| Phase                           | Status                                        | Evidence and remaining work                                                                                   |
+| ------------------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| 0 — Design                      | **COMPLETE**                                  | v0.2 plan adopted for local implementation; path and GitHub Pages decisions recorded                          |
+| 1 — Foundation                  | **IMPLEMENTED LOCALLY; VERIFICATION PARTIAL** | Catalogue, SRI page, assets, docs, GitHub Actions, scripts. npm-based checks remain unverified                |
+| 2 — SRI engine                  | **IMPLEMENTED LOCALLY; TESTS PARTIAL**        | SHA algorithms, URL/file/text adapters, bounded stream, validation, snippets; Node smoke PASS; Vitest NOT RUN |
+| 3 — UI and integration          | **IMPLEMENTED LOCALLY; BROWSER TEST BLOCKED** | Tabs, copy, cancellation, responsive styles; browser environment returned `ERR_BLOCKED_BY_ADMINISTRATOR`      |
+| 4 — Security review             | **INCOMPLETE / RELEASE BLOCKED**              | Lockfile, formatting, CI execution, general SAST, browser evidence/exception and owner T2 review pending      |
+| 5 — Public GitHub Pages release | **NOT AUTHORISED / NOT STARTED**              | Requires explicit release permission, passing gates and manual dispatch on `main`                             |
 
 ## 🧱 Phase 1 — Foundation follow-up
 
@@ -59,14 +59,14 @@ With separately authorised action only:
 
 ## 🔭 Future utilities and releases
 
-| Candidate | Version | Notes |
-| --- | --- | --- |
-| Verify an existing integrity token | v0.2 candidate | Proper Base64/algorithm validation, direct comparison |
-| SHA checksum calculator | Later | Different user-facing result; can share byte-digest primitives |
-| URL and Base64 encode/decode | Later | Bounded local conversion |
-| JSON formatter/validator | Later | Never evaluate untrusted JSON as JavaScript |
-| HTML entity encoder/decoder | Later | Render output as text, not parsed HTML |
-| Tool search/theme | When justified | Keep shared shell small until more tools exist |
+| Candidate                          | Version        | Notes                                                          |
+| ---------------------------------- | -------------- | -------------------------------------------------------------- |
+| Verify an existing integrity token | v0.2 candidate | Proper Base64/algorithm validation, direct comparison          |
+| SHA checksum calculator            | Later          | Different user-facing result; can share byte-digest primitives |
+| URL and Base64 encode/decode       | Later          | Bounded local conversion                                       |
+| JSON formatter/validator           | Later          | Never evaluate untrusted JSON as JavaScript                    |
+| HTML entity encoder/decoder        | Later          | Render output as text, not parsed HTML                         |
+| Tool search/theme                  | When justified | Keep shared shell small until more tools exist                 |
 
 ## ✅ Definition of implementation complete vs release complete
 
@@ -75,3 +75,9 @@ With separately authorised action only:
 - **Released:** Human owner approves the exact SHA, deployment occurs through the gated workflow and post-deploy smoke checks succeed.
 
 None of the last two stages may be inferred from source code existence alone.
+
+## v0.1.1 scoped CI-hardening PR (20 November 2026)
+
+- **Prepared:** Canonical Prettier output, ESLint control-character change, valid HTML, updated Vitest/HTML Validate constraints, and licence-free SHA-256-verified Gitleaks CLI.
+- **Still required:** PR CI evidence, human review/commit of the generated lockfile, independent browser verification or a properly approved SFW exception, and separate release approval.
+- **Not in scope:** Playwright CI, feature development, merging, public deployment or DNS changes.
