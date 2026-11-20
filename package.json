@@ -1,0 +1,30 @@
+{
+  "name": "web-tools",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Static, privacy-conscious web utilities for safesploitOrg.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:smoke": "node scripts/smoke-node.mjs",
+    "lint:js": "eslint public/assets/js tests scripts eslint.config.js",
+    "lint:html": "html-validate public/index.html public/sri-hash/index.html",
+    "format:check": "prettier --check \"public/**/*.{html,css,js,svg}\" \"tests/**/*.js\" \"scripts/**/*.mjs\" \"*.{md,json,js}\" \"docs/**/*.md\"",
+    "format": "prettier --write \"public/**/*.{html,css,js,svg}\" \"tests/**/*.js\" \"scripts/**/*.mjs\" \"*.{md,json,js}\" \"docs/**/*.md\"",
+    "check:routes": "node scripts/check-routes.mjs",
+    "check:security": "node scripts/check-security.mjs",
+    "check": "npm run format:check && npm run lint:js && npm run lint:html && npm run check:routes && npm run check:security && npm test && npm run test:smoke"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.28.0",
+    "eslint": "^9.28.0",
+    "globals": "^16.2.0",
+    "html-validate": "^9.7.1",
+    "prettier": "^3.5.3",
+    "vitest": "^3.2.4"
+  }
+}
