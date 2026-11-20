@@ -119,8 +119,12 @@ jobs:
           "${RUNNER_TEMP}/gitleaks" git --redact --no-banner --log-opts='--all' .
 
   deploy:
-    name: Manual, owner-approved GitHub Pages release only
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    name: Owner-approved GitHub Pages release
+    # Single-use authorisation for this release: squash-merge PR #1 with the
+    # exact approved message below. All ordinary future pushes remain non-deploying.
+    if: >-
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/main' && github.event.head_commit.message == 'release: web-tools v0.1.1 (owner-approved)')
     needs: [quality, security]
     runs-on: ubuntu-latest
     permissions:

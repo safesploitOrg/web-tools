@@ -4,6 +4,13 @@ All notable changes to Web Tools will be documented in this file. Format follows
 
 ## [Unreleased]
 
+### Release-candidate verification (20 November 2026)
+
+- Commit the npm-generated v0.1.1 dependency lockfile captured from GitHub Actions, replacing temporary uncommitted resolution at release time.
+- Align the HTML validator's `doctype-style` and `void-style` error-level rules with the canonical Prettier output, retaining both blocking gates.
+- Permit one owner-approved v0.1.1 release on a squash-merge commit with the exact subject `release: web-tools v0.1.1 (owner-approved)`, while preserving manual-only deployment for later versions.
+- Production deployment requires successful GitHub Actions quality and security jobs; no scanner or lint checks have been disabled.
+
 ### v0.1.1 — CI quality and security hardening (20 November 2026)
 
 - Apply the actual Prettier repair patch from GitHub Actions across HTML, CSS, JavaScript, tests and documentation; retain formatting as a blocking gate.
