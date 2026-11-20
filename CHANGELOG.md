@@ -4,6 +4,21 @@ All notable changes to Web Tools will be documented in this file. Format follows
 
 ## [Unreleased]
 
+## [0.1.2] - 20 November 2026
+
+### Changed
+
+- Remove the oversized "Practical tools. / Less friction." homepage headline and the three marketing tick-box claims.
+- Tighten the catalogue introduction and responsive spacing so available utilities are visible sooner.
+- Promote "Available tools" to the page's primary `<h1>` heading, retaining a clear accessible document outline.
+- Keep the short introduction, tool links, privacy note, SRI utility and shared dynamic-year footer unchanged.
+
+### Tests
+
+- Add regression coverage for the compact homepage, page heading, SRI route and footer.
+
+## [0.1.1] - 20 November 2026
+
 ### Release-candidate verification (20 November 2026)
 
 - Commit the npm-generated v0.1.1 dependency lockfile captured from GitHub Actions, replacing temporary uncommitted resolution at release time.
@@ -20,9 +35,9 @@ All notable changes to Web Tools will be documented in this file. Format follows
 - Replace the organisation-licensed `gitleaks-action` with the stand-alone Gitleaks CLI `v8.30.1`, pinned and SHA-256 verified, scanning complete Git history as a blocking security gate.
 - Increment the source candidate version to `0.1.1`, retain independent CI checks and preserve manual-release gates; Playwright remains outside CI with its SFW exception unapproved.
 
-**Dependency-lock gap:** npm registry resolution is unavailable in the authoring environment. CI temporarily generates and uploads a resolved `package-lock.json`; the file must be reviewed and committed before any release. A CI bootstrap lock is not a reproducible committed dependency lock.
+**Dependency-lock history:** Early CI runs generated a temporary lockfile due to local npm registry restrictions. The resolved `package-lock.json` was subsequently committed and verified in CI before the v0.1.1 deployment.
 
-**Release status:** Not released; this approval covers a draft PR only, not merging or deploying.
+**Release status:** v0.1.1 was deployed to GitHub Pages on 20 November 2026 after the owner-approved merge and successful GitHub Actions quality and security checks.
 
 ### CI quality hardening (20 November 2026)
 
@@ -34,7 +49,7 @@ All notable changes to Web Tools will be documented in this file. Format follows
 - Upload the temporary `web-tools-package-lock` artefact even if subsequent quality checks fail.
 - Add `scripts/fix-quality.sh` for one-time local autoformat followed by the unchanged blocking checks and dependency audit.
 
-**Verification gap:** npm registry access is blocked in the authoring environment, so the full Prettier pass and dependency-based checks remain unverified. After applying this revision, run the local helper or download and apply the proposed formatting patch from CI; the original source still needs a canonical formatter pass.
+**Historical verification gap:** Early local checks lacked npm registry access. The v0.1.1 release subsequently passed its blocking formatting, lint, unit, dependency audit and secret-scanning checks in GitHub Actions.
 
 ### CI / dependency locking
 
@@ -59,10 +74,12 @@ All notable changes to Web Tools will be documented in this file. Format follows
 
 ### Known limitations
 
-- Candidate has **not** completed Vitest, formatter, linter, HTML, registry audit or CI verification in the initial authoring environment.
+- The initial source candidate did not complete the npm-based checks locally; the deployed v0.1.1 revision passed those CI gates.
 - No Playwright browser job in CI; the outstanding SFW browser-verification requirement must be resolved before public release.
-- The GitHub repository now exists, but a successful Pages deployment and formal release approval are not verified.
+- The v0.1.1 Pages deployment succeeded; separate browser end-to-end testing remains outstanding.
 
 ## Version history
 
-No version has been released or tagged. `v0.1.0` is a proposed first release, **not** a claim of deployment on 18 November 2026.
+- `v0.1.0` was an implementation candidate, not a published release.
+- `v0.1.1` was published to GitHub Pages on 20 November 2026 (release commit `4c164960591dfceee41cc58629b0bf487614079d`).
+- `v0.1.2` is a compact-homepage source revision; publication requires separate release approval.
