@@ -4,6 +4,19 @@ All notable changes to Web Tools will be documented in this file. Format follows
 
 ## [Unreleased]
 
+### CI quality hardening (20 November 2026)
+
+- Keep Prettier formatting a blocking CI check. Remove unsupported `*.svg` files from its glob rather than suppressing formatter errors.
+- Add `check:svg` with Python standard-library XML parsing and five positive/negative security regression tests for SVG assets.
+- Define a shared Prettier configuration to standardise quoting, line width and line endings.
+- Split the GitHub Actions quality job into independently enforced format, ESLint, HTML, SVG, route, security, Vitest and smoke steps, allowing the full failure set to be reported.
+- On a Prettier failure, publish a downloadable `web-tools-prettier-repair` patch without turning the failing gate into a pass.
+- Upload the temporary `web-tools-package-lock` artefact even if subsequent quality checks fail.
+- Add `scripts/fix-quality.sh` for one-time local autoformat followed by the unchanged blocking checks and dependency audit.
+
+**Verification gap:** npm registry access is blocked in the authoring environment, so the full Prettier pass and dependency-based checks remain unverified. After applying this revision, run the local helper or download and apply the proposed formatting patch from CI; the original source still needs a canonical formatter pass.
+
+
 ### CI / dependency locking
 
 - Add `scripts/relock.sh` to generate, verify and locally test the complete `package-lock.json`, ready for review and commit.
@@ -30,7 +43,7 @@ All notable changes to Web Tools will be documented in this file. Format follows
 
 - Candidate has **not** completed Vitest, formatter, linter, HTML, registry audit or CI verification in the initial authoring environment.
 - No Playwright browser job in CI; the outstanding SFW browser-verification requirement must be resolved before public release.
-- Repository and Pages deployment are not yet created or published.
+- The GitHub repository now exists, but a successful Pages deployment and formal release approval are not verified.
 
 ## Version history
 

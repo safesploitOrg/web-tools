@@ -1,6 +1,6 @@
 # 🏛️ Web Tools — Architecture
 
-> **Status:** As-built local implementation candidate, `v0.1.0` (unreleased), 18 November 2026. No GitHub repository, hosting or release is asserted. The agreed design baseline was v0.2.
+> **Status:** As-built local implementation candidate, `v0.1.0` (unreleased), 18 November 2026. The GitHub repository now exists; a successful Pages deployment or approved release has not been verified. The agreed design baseline was v0.2.
 
 ## 🎯 Purpose and boundaries
 
@@ -84,9 +84,9 @@ An HTML `<script>` or `<link rel="stylesheet">` string is offered only when the 
 
 ## 🧪 Verification and release pipeline
 
-`pages.yml` runs a blocking **quality** job (Vitest, lint, HTML, formatting and link checks) and **security** job (npm audit and pinned Gitleaks). A deployment job depends on both, runs only when **manually dispatched from `main`**, and publishes only `public/`. The external Actions are pinned to verified commit SHAs at authoring time.
+`pages.yml` runs independently blocking **quality** steps (Prettier, ESLint, HTML validation, SVG XML/hostile-input tests, Vitest, routes and smoke checks) and a **security** job (npm audit and pinned Gitleaks). A failing Prettier step emits a repair patch artefact without changing its failed status; the lockfile artefact uploads after unrelated quality failures. A deployment job depends on both, runs only when **manually dispatched from `main`**, and publishes only `public/`. The external Actions are pinned to verified commit SHAs at authoring time.
 
-**Playwright is absent from CI by owner request.** Browser E2E remains an unmet SFW v1.1 requirement. No exception has been approved or released, and the initial implementation has not been pushed or deployed. See [`docs/testing.md`](docs/testing.md) for the exact verification status and remaining work.
+**Playwright is absent from CI by owner request.** Browser E2E remains an unmet SFW v1.1 requirement. No exception has been approved or released, and the repository exists, but successful Pages deployment and formal release approval have not been verified. See [`docs/testing.md`](docs/testing.md) for the exact verification status and remaining work.
 
 ## 📚 Authoritative references
 

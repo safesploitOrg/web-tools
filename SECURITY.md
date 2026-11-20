@@ -32,7 +32,7 @@ Until a repository security-advisory channel is configured, report vulnerabiliti
 
 ## 🧪 Release controls
 
-CI is designed to fail on lint, formatting, tests, route checks, npm audit at high severity and Gitleaks findings. The local unsafe-API scanner is narrow and not a substitute for general SAST. Before publishing:
+CI is designed to fail on lint, formatting, tests, SVG XML/active-content checks, route checks, npm audit at high severity and Gitleaks findings. Failed formatting triggers a diagnostic repair-patch artefact but does not waive the blocking gate. The local unsafe-API scanner is narrow and not a substitute for general SAST. Before publishing:
 
 1. Complete and document the dependency/CI baseline and scanner enforcement, including high/critical vulnerability triage.
 2. Resolve the SFW browser-E2E requirement with adequate evidence or a **permissible, explicit, time-bounded** owner-approved Section 14 exception (owner, issue, approval, expiry, compensating controls, restoration criteria).

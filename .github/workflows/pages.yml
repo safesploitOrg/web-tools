@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   quality:
-    name: Unit tests, source validation and routes
+    name: Formatting, lint, tests and static checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout reviewed revision
@@ -31,12 +31,50 @@ jobs:
           echo '::warning::package-lock.json is not committed. Run scripts/relock.sh locally and commit it.'
           npm install --package-lock-only --ignore-scripts --no-audit --no-fund
       - name: Install locked development dependencies
+        id: deps
         run: npm ci --ignore-scripts --no-fund
-      - name: Enforce all quality and unit checks
-        run: npm run check
-      - name: Independent Node smoke checks
+      - name: Enforce Prettier formatting
+        id: format
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm run format:check
+      - name: Enforce JavaScript lint
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm run lint:js
+      - name: Enforce HTML validation
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm run lint:html
+      - name: Validate local routes and imports
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm run check:routes
+      - name: Enforce static security patterns
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm run check:security
+      - name: Validate SVG assets and hostile input tests
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm run check:svg
+      - name: Enforce Vitest unit tests
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm test
+      - name: Enforce independent Node smoke tests
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
         run: npm run test:smoke
-      - name: Downloadable resolved lockfile for review and commit
+      - name: Generate formatting repair patch when Prettier fails
+        id: format_repair
+        if: ${{ !cancelled() && steps.format.outcome == 'failure' }}
+        run: |
+          npm run format
+          git diff --binary -- . ':!package-lock.json' > prettier-format.patch
+          test -s prettier-format.patch
+      - name: Upload proposed formatting changes (diagnostic only)
+        if: ${{ !cancelled() && steps.format_repair.outcome == 'success' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: web-tools-prettier-repair
+          path: prettier-format.patch
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload resolved lockfile even when a quality check fails
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: web-tools-package-lock
@@ -60,10 +98,13 @@ jobs:
         if: hashFiles('package-lock.json') == ''
         run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
       - name: Install locked development dependencies
+        id: deps
         run: npm ci --ignore-scripts --no-fund
       - name: Enforce high-severity dependency audit
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
         run: npm audit --audit-level=high
       - name: Scan repository history for secrets
+        if: ${{ !cancelled() }}
         uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

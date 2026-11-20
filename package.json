@@ -13,11 +13,12 @@
     "test:smoke": "node scripts/smoke-node.mjs",
     "lint:js": "eslint public/assets/js tests scripts eslint.config.js",
     "lint:html": "html-validate public/index.html public/sri-hash/index.html",
-    "format:check": "prettier --check \"public/**/*.{html,css,js,svg}\" \"tests/**/*.js\" \"scripts/**/*.mjs\" \"*.{md,json,js}\" \"docs/**/*.md\"",
-    "format": "prettier --write \"public/**/*.{html,css,js,svg}\" \"tests/**/*.js\" \"scripts/**/*.mjs\" \"*.{md,json,js}\" \"docs/**/*.md\"",
+    "format:check": "prettier --check \"public/**/*.{html,css,js}\" \"tests/**/*.js\" \"scripts/**/*.mjs\" \"*.{md,json,js}\" \"docs/**/*.md\"",
+    "format": "prettier --write \"public/**/*.{html,css,js}\" \"tests/**/*.js\" \"scripts/**/*.mjs\" \"*.{md,json,js}\" \"docs/**/*.md\"",
     "check:routes": "node scripts/check-routes.mjs",
     "check:security": "node scripts/check-security.mjs",
-    "check": "npm run format:check && npm run lint:js && npm run lint:html && npm run check:routes && npm run check:security && npm test && npm run test:smoke"
+    "check": "npm run format:check && npm run lint:js && npm run lint:html && npm run check:routes && npm run check:security && npm run check:svg && npm test && npm run test:smoke",
+    "check:svg": "python3 -m unittest discover -s tests/svg -p \"test_*.py\" && python3 scripts/check_svg.py"
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",

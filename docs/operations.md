@@ -4,7 +4,7 @@
 
 ## 🚀 Prerequisites and release
 
-1. Create/push the **reviewed** `safesploitOrg/web-tools` repository only with owner authorisation.
+1. The `safesploitOrg/web-tools` repository exists. Push any further reviewed changes only with owner authorisation; do not assume that repository existence authorises deployment.
 2. Finish and commit the lockfile; enforce protected `main` and `github-pages` environment approvals.
 3. Confirm SFW Profile B+D T2 tests, vulnerabilities, manual browser evidence/exception and owner release authorisation are documented.
 4. Set repository **Settings → Pages → Build and deployment → Source: GitHub Actions**. No custom domain; do not add a `CNAME`.

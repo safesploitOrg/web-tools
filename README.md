@@ -2,11 +2,11 @@
 
 A collection of small, browser-first utilities for developers, system administrators and security engineers, maintained under `safesploitOrg`.
 
-> **Status:** Local implementation candidate `v0.1.0` — **not released or deployed**. Repository, Pages configuration, required independent browser verification and T2 owner approval are pending. The published URL below is a target, not a claim of availability.
+> **Status:** `v0.1.0` source candidate, **not verified for release**. The GitHub repository exists, but a successful Pages deployment and the required independent browser verification have not been established. T2 owner approval remains pending.
 
 ## 🌐 URLs and scope
 
-- **Proposed GitHub repository:** `https://github.com/safesploitOrg/web-tools`
+- **GitHub repository:** `https://github.com/safesploitOrg/web-tools`
 - **Target catalogue:** `https://safesploitorg.github.io/web-tools/`
 - **Target SRI utility:** `https://safesploitorg.github.io/web-tools/sri-hash/`
 - **Hosting:** GitHub Pages project site, no custom domain and no `CNAME`.
@@ -45,7 +45,7 @@ The same relative links should resolve under the GitHub Pages `/web-tools/` pref
 
 ### Quality commands
 
-Requires Node.js **22+**. Once the registry is available and the dependency lockfile is generated and verified:
+Requires Node.js **22+** and Python 3 (for the dependency-free SVG XML validator). Once the registry is available and the dependency lockfile is generated and verified:
 
 ```bash
 npm install --package-lock-only --ignore-scripts
@@ -53,9 +53,11 @@ npm ci --ignore-scripts
 npm run check                 # Includes formatting, lint, HTML, routes, safety checks, Vitest
 npm run test:smoke            # Uses only built-in Node modules
 npm run format                # Apply Prettier formatting before committing
+npm run check:svg             # Validate SVG XML + five hostile-input unit cases
+bash scripts/fix-quality.sh   # One-time lockfile, format, check and audit helper
 ```
 
-**Environment limitation at initial implementation:** npm registry DNS was unavailable, so `npm ci`, Vitest, ESLint, Prettier and HTML validation could not be executed. The dependency lockfile must be generated with registry access, reviewed and committed **before the CI workflow can pass**. Do not mark the release as verified on the strength of `test:smoke` alone. See [`docs/testing.md`](docs/testing.md).
+**Environment limitation at initial implementation:** npm registry DNS was unavailable, so `npm ci`, Vitest, ESLint, Prettier and HTML validation could not be executed. The dependency lockfile must be generated with registry access, reviewed and committed **before a reproducible Pages release**. Do not mark the release as verified on the strength of `test:smoke` alone. See [`docs/testing.md`](docs/testing.md).
 
 ## 🚦 CI and release boundaries
 
@@ -94,3 +96,27 @@ The quality CI job also publishes a `web-tools-package-lock` artefact containing
 the complete resolved `package-lock.json`, which you can download from the
 GitHub Actions run and commit if you cannot run npm locally. This artefact
 should be reviewed like any other dependency change.
+
+
+## Formatting failure recovery (quality gate remains enforced)
+
+The initial source candidate is not yet Prettier-formatted. The two SVG assets are checked by `npm run check:svg` instead of being passed to a parser that cannot infer `.svg`. **Do not remove `format:check` to make CI pass.**
+
+If npm is available locally, run:
+
+```bash
+bash scripts/fix-quality.sh
+git diff --check
+git status --short
+# Review the diff, then commit the formatted source and package-lock.json.
+```
+
+If only GitHub Actions has npm access, the quality job still fails on formatting but publishes `web-tools-prettier-repair` as an artefact after generating the actual Prettier diff. Download the artefact, extract `prettier-format.patch` at the repository root and apply it:
+
+```bash
+git apply --check prettier-format.patch
+git apply prettier-format.patch
+# Commit the reviewed formatting changes and rerun the quality workflow.
+```
+
+The `web-tools-package-lock` artefact is uploaded even when Prettier fails, so it can be reviewed and committed separately. The CI job reports other check failures independently and **a failed format/lint/test gate still blocks deployment**. The formatter patch is diagnostic only: no action auto-commits or deploys it.

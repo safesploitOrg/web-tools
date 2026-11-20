@@ -26,7 +26,7 @@
 ## 🧱 Phase 1 — Foundation follow-up
 
 - Obtain npm registry access, generate/review and commit `package-lock.json`.
-- Run actual ESLint, Prettier and HTML validation. Fix any findings, then check locked reproducible install with `npm ci`.
+- Apply a canonical `npm run format` pass (locally via `scripts/fix-quality.sh` or by applying the CI repair patch). Run actual ESLint, Prettier, HTML, SVG and Vitest checks, then verify locked `npm ci`. The configuration now reports independent failures, but CI passage has not been observed.
 - Observe CI results for the exact revision; confirm every required gate is blocking.
 
 ## 🔒 Phase 2 — Hashing engine follow-up
