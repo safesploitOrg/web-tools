@@ -78,3 +78,19 @@ Do not dispatch the release workflow until [`docs/testing.md`](docs/testing.md),
 ## 📜 Licensing
 
 No licence has been selected by the repository owner. Source availability should not be confused with an open-source licence; do not add a licence without an owner decision.
+
+## Missing npm lockfile / CI recovery
+
+For the first checkout, run `bash scripts/relock.sh` on a machine with access to
+`registry.npmjs.org`. This generates `package-lock.json`, performs a locked
+installation and runs the checks. Review and commit `package-lock.json`.
+
+Until it is committed, CI quality/security jobs temporarily generate an npm
+lockfile before installing, but **releases are blocked** by the deploy job.
+This temporary path is **not reproducible across runs** and should be removed
+after the proper lockfile is committed.
+
+The quality CI job also publishes a `web-tools-package-lock` artefact containing
+the complete resolved `package-lock.json`, which you can download from the
+GitHub Actions run and commit if you cannot run npm locally. This artefact
+should be reviewed like any other dependency change.

@@ -4,6 +4,14 @@ All notable changes to Web Tools will be documented in this file. Format follows
 
 ## [Unreleased]
 
+### CI / dependency locking
+
+- Add `scripts/relock.sh` to generate, verify and locally test the complete `package-lock.json`, ready for review and commit.
+- Avoid the `setup-node` npm-cache lockfile failure by allowing a **temporary, explicitly warned** missing-lock bootstrap in quality/security jobs.
+- Export the resolved `package-lock.json` as a downloadable GitHub Actions artefact for review/commit.
+- Block Pages releases until a real, non-empty `package-lock.json` is committed; CI bootstrap is not a substitute for a committed dependency lock.
+
+
 ### Added
 
 - New browser-first catalogue and shared responsive layout for the planned GitHub Pages `/web-tools/` project site.

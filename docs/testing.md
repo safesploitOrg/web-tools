@@ -58,3 +58,12 @@ For the manual/browser review, verify at least: desktop 1440×900, tablet 768×1
 ## 🚫 Unmet exception status
 
 The omission of Playwright in CI has been requested, **but no Section 14 waiver is recorded**. A potential exception needs: named owner, tracking issue, approval date, scope and rationale, expiry/review date, compensating verification, residual risk, restoration criteria and owner decision. Selected T2 public release separately requires human project-owner sign-off. Both remain pending.
+
+### Dependency lockfile bootstrap limitation
+
+If `package-lock.json` is missing, CI temporarily resolves and generates one
+for its validation jobs. This is a provisional compatibility path, **not**
+a release-acceptable SFW exception. Generate and commit the lockfile using
+`bash scripts/relock.sh`; then remove the fallback and restore setup-node npm
+caching. No network-dependent package installation or audit was verified in
+the offline authoring environment.

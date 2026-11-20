@@ -25,13 +25,24 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '22'
-          cache: npm
+      - name: Bootstrap lockfile when absent (temporary, not release-ready)
+        if: hashFiles('package-lock.json') == ''
+        run: |
+          echo '::warning::package-lock.json is not committed. Run scripts/relock.sh locally and commit it.'
+          npm install --package-lock-only --ignore-scripts --no-audit --no-fund
       - name: Install locked development dependencies
         run: npm ci --ignore-scripts --no-fund
       - name: Enforce all quality and unit checks
         run: npm run check
       - name: Independent Node smoke checks
         run: npm run test:smoke
+      - name: Downloadable resolved lockfile for review and commit
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: web-tools-package-lock
+          path: package-lock.json
+          if-no-files-found: error
+          retention-days: 14
 
   security:
     name: Dependency and secret checks
@@ -45,7 +56,9 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '22'
-          cache: npm
+      - name: Bootstrap lockfile when absent (temporary, not release-ready)
+        if: hashFiles('package-lock.json') == ''
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
       - name: Install locked development dependencies
         run: npm ci --ignore-scripts --no-fund
       - name: Enforce high-severity dependency audit
@@ -70,6 +83,10 @@ jobs:
     steps:
       - name: Checkout exactly the verified source revision
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Require committed lockfile before release
+        run: |
+          git ls-files --error-unmatch package-lock.json >/dev/null
+          test -s package-lock.json
       - name: Configure GitHub Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
       - name: Confirm only expected public routes are published
