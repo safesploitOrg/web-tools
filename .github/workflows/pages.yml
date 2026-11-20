@@ -124,7 +124,7 @@ jobs:
     # exact approved message below. All ordinary future pushes remain non-deploying.
     if: >-
       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
-      (github.event_name == 'push' && github.ref == 'refs/heads/main' && github.event.head_commit.message == 'release: web-tools v0.1.1 (owner-approved)')
+      (github.event_name == 'push' && github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'release: web-tools v0.1.1 (owner-approved)'))
     needs: [quality, security]
     runs-on: ubuntu-latest
     permissions:
