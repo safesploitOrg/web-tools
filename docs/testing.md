@@ -4,22 +4,22 @@
 
 ## 🧭 Required gates
 
-| Check | Local status | CI policy / next step |
-| --- | --- | --- |
-| Node independent hashing + negative smoke | **PASS** | `npm run test:smoke` |
-| Static relative link/module path checks | **PASS** | `npm run check:routes` |
-| Narrow unsafe-API/obvious-secret check | **PASS** | `npm run check:security`; not a full SAST/secret scanner |
-| `node --check` on JS modules | Pending final run | Local source syntax check |
-| Vitest reference/negative tests | **NOT RUN** | Blocking `npm test` in CI after lockfile generation |
-| Prettier formatting | **NOT RUN** | Blocking `npm run format:check` in CI |
-| ESLint | **NOT RUN** | Blocking `npm run lint:js` in CI |
-| HTML Validate | **NOT RUN** | Blocking `npm run lint:html` in CI |
-| npm dependency audit | **NOT RUN** | Blocking `npm audit --audit-level=high` in CI |
-| Gitleaks history secret scanning | **NOT RUN** | Blocking pinned action in CI |
-| Comprehensive SAST | **NOT RUN** | Still to select, implement and enforce; narrow local check does not substitute |
-| Playwright Chromium/Firefox/WebKit in CI | **NOT RUN, intentionally omitted** | Unmet SFW Profile B requirement, exception/validation pending |
-| Browser smoke/manual accessibility | **NOT VERIFIED** | The test browser returned `ERR_BLOCKED_BY_ADMINISTRATOR` for localhost and file URLs in this environment |
-| Deployed HTTPS/Pages smoke | **NOT RUN** | No deployment or approval |
+| Check                                     | Local status                       | CI policy / next step                                                                                    |
+| ----------------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Node independent hashing + negative smoke | **PASS**                           | `npm run test:smoke`                                                                                     |
+| Static relative link/module path checks   | **PASS**                           | `npm run check:routes`                                                                                   |
+| Narrow unsafe-API/obvious-secret check    | **PASS**                           | `npm run check:security`; not a full SAST/secret scanner                                                 |
+| `node --check` on JS modules              | Pending final run                  | Local source syntax check                                                                                |
+| Vitest reference/negative tests           | **NOT RUN**                        | Blocking `npm test` in CI after lockfile generation                                                      |
+| Prettier formatting                       | **NOT RUN**                        | Blocking `npm run format:check` in CI                                                                    |
+| ESLint                                    | **NOT RUN**                        | Blocking `npm run lint:js` in CI                                                                         |
+| HTML Validate                             | **NOT RUN**                        | Blocking `npm run lint:html` in CI                                                                       |
+| npm dependency audit                      | **NOT RUN**                        | Blocking `npm audit --audit-level=high` in CI                                                            |
+| Gitleaks history secret scanning          | **NOT RUN**                        | Blocking pinned action in CI                                                                             |
+| Comprehensive SAST                        | **NOT RUN**                        | Still to select, implement and enforce; narrow local check does not substitute                           |
+| Playwright Chromium/Firefox/WebKit in CI  | **NOT RUN, intentionally omitted** | Unmet SFW Profile B requirement, exception/validation pending                                            |
+| Browser smoke/manual accessibility        | **NOT VERIFIED**                   | The test browser returned `ERR_BLOCKED_BY_ADMINISTRATOR` for localhost and file URLs in this environment |
+| Deployed HTTPS/Pages smoke                | **NOT RUN**                        | No deployment or approval                                                                                |
 
 ## ✅ Commands executed
 
@@ -68,25 +68,30 @@ a release-acceptable SFW exception. Generate and commit the lockfile using
 caching. No network-dependent package installation or audit was verified in
 the offline authoring environment.
 
-
 ## 20 November 2026: formatting gate hardening
 
 The supplied CI log showed Prettier exit 2: `.svg` input has no inferred parser, and many checked source files were not formatted. This revision moves SVG validation to `npm run check:svg` with XML parsing and negative tests; `npm run format:check` remains blocking for HTML, CSS, JS, JSON and Markdown.
 
-The quality job now executes the independent gates separately with explicit post-install conditions; failed gates still make the job fail and block manual Pages deployment. When only formatting fails, a *diagnostic* `web-tools-prettier-repair` patch is generated by Prettier and offered for review and application. The lockfile artefact also uploads after earlier quality failures.
+The quality job now executes the independent gates separately with explicit post-install conditions; failed gates still make the job fail and block manual Pages deployment. When only formatting fails, a _diagnostic_ `web-tools-prettier-repair` patch is generated by Prettier and offered for review and application. The lockfile artefact also uploads after earlier quality failures.
 
 **Observed in the current offline authoring environment:**
 
-| Check | Result | Evidence |
-| --- | --- | --- |
-| Five SVG parser/malicious-input tests | **PASS** | `npm run check:svg` (Python unittest) |
-| Both public SVG assets | **PASS** | `npm run check:svg` (XML / reference policy) |
-| Static relative routes/imports | **PASS** | `npm run check:routes` |
-| Narrow static security checks | **PASS** | `npm run check:security` |
-| Twelve independent digest comparisons and smoke cases | **PASS** | `npm run test:smoke` |
-| GitHub Actions YAML | **Parsed locally** | Python YAML parser; no live Actions run |
-| Prettier source formatting | **NOT RUN / still requires one-time autoformat** | npm registry unavailable locally |
-| ESLint, HTML Validate, Vitest, npm audit, Gitleaks | **NOT RUN** | Dependencies/CI access unavailable |
-| Playwright browser tests | **NOT RUN** | Intentionally not in CI; unresolved SFW verification gap |
+| Check                                                 | Result                                           | Evidence                                                 |
+| ----------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------------- |
+| Five SVG parser/malicious-input tests                 | **PASS**                                         | `npm run check:svg` (Python unittest)                    |
+| Both public SVG assets                                | **PASS**                                         | `npm run check:svg` (XML / reference policy)             |
+| Static relative routes/imports                        | **PASS**                                         | `npm run check:routes`                                   |
+| Narrow static security checks                         | **PASS**                                         | `npm run check:security`                                 |
+| Twelve independent digest comparisons and smoke cases | **PASS**                                         | `npm run test:smoke`                                     |
+| GitHub Actions YAML                                   | **Parsed locally**                               | Python YAML parser; no live Actions run                  |
+| Prettier source formatting                            | **NOT RUN / still requires one-time autoformat** | npm registry unavailable locally                         |
+| ESLint, HTML Validate, Vitest, npm audit, Gitleaks    | **NOT RUN**                                      | Dependencies/CI access unavailable                       |
+| Playwright browser tests                              | **NOT RUN**                                      | Intentionally not in CI; unresolved SFW verification gap |
 
 Before claiming release readiness, apply a canonical `npm run format` pass to the source, commit the output, commit a reviewed lockfile, and verify all CI gates. The above subset is not a clean release report.
+
+## CI hardening verification — 20 November 2026
+
+Previous Actions run #3 (`44740888931`) failed on Prettier, ESLint, HTML validation, dependency audit and Gitleaks Action licensing. The generated `web-tools-prettier-repair` patch has been applied to the v0.1.1 source candidate. The source also corrects the control-character validator and invalid HTML markup, updates development dependency requirements, and replaces the licensed Action with a pinned standalone CLI scan.
+
+Before a PR, Node smoke, route, source-security and Python SVG tests passed locally. Npm-based checks remain **NOT RUN locally** because the registry cannot resolve from the authoring environment. The new PR's GitHub Actions results are the authoritative evidence for Prettier, ESLint, HTML Validate, Vitest, npm audit and secret scanning. The resolved lockfile must still be separately reviewed and committed. Browser E2E and owner release sign-off remain open.

@@ -1,55 +1,99 @@
 <!doctype html>
 <html lang="en-GB">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Small, privacy-conscious web utilities for developers and infrastructure engineers.">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src https:; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
-    <meta name="referrer" content="no-referrer">
-    <meta name="color-scheme" content="dark">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Small, privacy-conscious web utilities for developers and infrastructure engineers."
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src https:; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="color-scheme" content="dark" />
     <title>Web Tools · safesploitOrg</title>
-    <link rel="icon" href="./assets/images/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="./assets/css/site.css">
+    <link rel="icon" href="./assets/images/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./assets/css/site.css" />
     <script type="module" src="./assets/js/shared/footer.js"></script>
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to main content</a>
     <div class="site-shell">
       <header class="site-header">
-        <a class="brand" href="./" aria-label="Web Tools home"><span class="brand-mark" aria-hidden="true">&gt;_</span><span><strong>Web Tools</strong><small>by safesploitOrg</small></span></a>
+        <a class="brand" href="./" aria-label="Web Tools home"
+          ><span class="brand-mark" aria-hidden="true">&gt;_</span
+          ><span><strong>Web Tools</strong><small>by safesploitOrg</small></span></a
+        >
       </header>
       <main id="main">
         <section class="hero" aria-labelledby="hero-title">
-          <p class="eyebrow"><span class="status-pip" aria-hidden="true"></span> BROWSER-FIRST UTILITIES</p>
-          <h1 id="hero-title">Practical tools.<br><span>Less friction.</span></h1>
-          <p class="hero-copy">Small, focused utilities for developers, system administrators and security engineers. No account, no tracking, no unnecessary services.</p>
-          <div class="hero-points"><span>✓ Local processing by default</span><span>✓ Source available</span><span>✓ Zero runtime dependencies</span></div>
+          <p class="eyebrow">
+            <span class="status-pip" aria-hidden="true"></span> BROWSER-FIRST UTILITIES
+          </p>
+          <h1 id="hero-title">Practical tools.<br /><span>Less friction.</span></h1>
+          <p class="hero-copy">
+            Small, focused utilities for developers, system administrators and security engineers.
+            No account, no tracking, no unnecessary services.
+          </p>
+          <div class="hero-points">
+            <span>✓ Local processing by default</span><span>✓ Source available</span
+            ><span>✓ Zero runtime dependencies</span>
+          </div>
         </section>
         <section class="catalogue" aria-labelledby="catalogue-title">
-          <div class="section-heading"><div><p class="eyebrow">YOUR TOOLBOX</p><h2 id="catalogue-title">Available tools</h2></div><span class="tool-count">01 tool</span></div>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">YOUR TOOLBOX</p>
+              <h2 id="catalogue-title">Available tools</h2>
+            </div>
+            <span class="tool-count">01 tool</span>
+          </div>
           <div class="catalogue-grid">
             <a class="tool-card" href="./sri-hash/">
               <span class="tool-icon" aria-hidden="true">#</span>
               <span class="tool-category">SECURITY · INTEGRITY</span>
               <span class="tool-title">SRI Hash Generator <span aria-hidden="true">↗</span></span>
-              <span class="tool-description">Generate SHA-256, SHA-384 and SHA-512 integrity hashes for scripts and stylesheets. Supports URLs, files and pasted text.</span>
+              <span class="tool-description"
+                >Generate SHA-256, SHA-384 and SHA-512 integrity hashes for scripts and stylesheets.
+                Supports URLs, files and pasted text.</span
+              >
               <span class="tool-action">Open utility <span aria-hidden="true">→</span></span>
             </a>
-            <div class="tool-card tool-card-upcoming" aria-label="More utilities planned">
+            <div class="tool-card tool-card-upcoming">
               <span class="tool-icon icon-muted" aria-hidden="true">+</span>
               <span class="tool-category">COMING LATER</span>
               <span class="tool-title">More tools on the way</span>
-              <span class="tool-description">A modular foundation for lightweight hashing, formatting and encoding helpers, added when they have a clear use case.</span>
+              <span class="tool-description"
+                >A modular foundation for lightweight hashing, formatting and encoding helpers,
+                added when they have a clear use case.</span
+              >
               <span class="tool-action quiet">Planned, not yet available</span>
             </div>
           </div>
         </section>
-        <aside class="privacy-note" aria-labelledby="privacy-title"><span aria-hidden="true">🔒</span><div><h2 id="privacy-title">Designed for privacy</h2><p>Pasted text and selected files are processed locally in your browser. When you choose a URL-based tool, your browser contacts the specified remote host.</p></div></aside>
+        <aside class="privacy-note" aria-labelledby="privacy-title">
+          <span aria-hidden="true">🔒</span>
+          <div>
+            <h2 id="privacy-title">Designed for privacy</h2>
+            <p>
+              Pasted text and selected files are processed locally in your browser. When you choose
+              a URL-based tool, your browser contacts the specified remote host.
+            </p>
+          </div>
+        </aside>
       </main>
       <footer class="site-footer">
         <span class="footer-copyright">© <span data-current-year>2026</span> safesploitOrg</span>
-        <a class="footer-github" href="https://github.com/safesploitOrg/web-tools" target="_blank" rel="noopener noreferrer" aria-label="Web Tools repository on GitHub">
-          <img src="./assets/images/github.svg" width="24" height="24" alt="">
+        <a
+          class="footer-github"
+          href="https://github.com/safesploitOrg/web-tools"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Web Tools repository on GitHub"
+        >
+          <img src="./assets/images/github.svg" width="24" height="24" alt="" />
         </a>
       </footer>
     </div>

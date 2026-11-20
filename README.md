@@ -2,7 +2,7 @@
 
 A collection of small, browser-first utilities for developers, system administrators and security engineers, maintained under `safesploitOrg`.
 
-> **Status:** `v0.1.0` source candidate, **not verified for release**. The GitHub repository exists, but a successful Pages deployment and the required independent browser verification have not been established. T2 owner approval remains pending.
+> **Status:** `v0.1.1` CI-hardening source candidate, **not verified for release**. The GitHub repository exists, but a successful Pages deployment and the required independent browser verification have not been established. T2 owner approval remains pending.
 
 ## 🌐 URLs and scope
 
@@ -61,7 +61,7 @@ bash scripts/fix-quality.sh   # One-time lockfile, format, check and audit helpe
 
 ## 🚦 CI and release boundaries
 
-The proposed `.github/workflows/pages.yml` runs unit, format, source, route, audit and secret checks; it does **not** run Playwright in CI, per owner direction. That omission is an unresolved SFW Profile B browser-E2E requirement, not a passing result.
+The `.github/workflows/pages.yml` runs unit, format, source, route, audit and secret checks; it does **not** run Playwright in CI, per owner direction. That omission is an unresolved SFW Profile B browser-E2E requirement, not a passing result.
 
 Publishing is gated on both CI jobs and requires a **manual `workflow_dispatch` on `main`**, plus the GitHub Pages environment protections and a separately recorded owner T2 release decision. Source implementation does not grant permission to push, merge or deploy.
 
@@ -97,10 +97,9 @@ the complete resolved `package-lock.json`, which you can download from the
 GitHub Actions run and commit if you cannot run npm locally. This artefact
 should be reviewed like any other dependency change.
 
-
 ## Formatting failure recovery (quality gate remains enforced)
 
-The initial source candidate is not yet Prettier-formatted. The two SVG assets are checked by `npm run check:svg` instead of being passed to a parser that cannot infer `.svg`. **Do not remove `format:check` to make CI pass.**
+The source now includes the GitHub Actions Prettier repair patch. The two SVG assets are checked by `npm run check:svg` instead of being passed to a parser that cannot infer `.svg`. **Do not remove `format:check` to make CI pass.**
 
 If npm is available locally, run:
 
@@ -120,3 +119,11 @@ git apply prettier-format.patch
 ```
 
 The `web-tools-package-lock` artefact is uploaded even when Prettier fails, so it can be reviewed and committed separately. The CI job reports other check failures independently and **a failed format/lint/test gate still blocks deployment**. The formatter patch is diagnostic only: no action auto-commits or deploys it.
+
+## v0.1.1 CI hardening status
+
+- Previous CI run #3 identified formatting, ESLint, HTML, dependency-audit and licensed Gitleaks Action failures.
+- This change applies the generated formatting patch, fixes source-level lint and HTML errors, and upgrades Vitest and HTML Validate to remediate the reported dependency chains.
+- Secret scanning uses the standalone Gitleaks CLI v8.30.1 (download verified against upstream SHA-256) rather than the organisation-licensed Action. The history scan is still a required, blocking CI step.
+- The repository still has **no committed lockfile**. CI bootstraps one for testing and uploads it for owner review, while the manual release job refuses deployment until the verified lockfile is committed.
+- No application feature changes, Playwright CI addition, merge or release are authorised by this change.

@@ -10,7 +10,8 @@ const FORBIDDEN = [
   { name: 'storage persistence', pattern: /\b(?:localStorage|sessionStorage)\b/u },
   { name: 'debug logging', pattern: /\bconsole\.(?:log|debug|info|warn|error)\s*\(/u },
 ];
-const SUSPICIOUS_SECRET = /(?:-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9]{25,}|sk-[A-Za-z0-9_-]{24,})/u;
+const SUSPICIOUS_SECRET =
+  /(?:-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9]{25,}|sk-[A-Za-z0-9_-]{24,})/u;
 
 function listFiles(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -35,4 +36,5 @@ for (const file of listFiles(SOURCE).filter((name) => name.endsWith('.js'))) {
 }
 
 if (issues) process.exitCode = 1;
-else console.info('PASS: local unsafe-API and obvious-secret checks (not a full SAST/secret scan).');
+else
+  console.info('PASS: local unsafe-API and obvious-secret checks (not a full SAST/secret scan).');

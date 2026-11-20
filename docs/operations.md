@@ -12,6 +12,10 @@
 6. Verify `https://safesploitorg.github.io/web-tools/` and `/web-tools/sri-hash/` (HTTPS, assets, navigation, SHA reference, copy buttons, errors and size controls), and record the deployed commit SHA and results.
 7. Only after verification, separately approve updating `safesploitOrg/overview` to link to Web Tools.
 
+## v0.1.1 owner-approved release path (20 November 2026)
+
+The repository can deploy this **one** owner-approved release on a successful `main` push when the commit message is exactly `release: web-tools v0.1.1 (owner-approved)`. This complements (and does not remove) the ordinary manual `workflow_dispatch` release path. The deployment still depends on the passing quality and security jobs and an already-committed npm lockfile. Future push commits with any other subject do not deploy automatically.
+
 ## 🩺 Operational checks
 
 - Basic route availability and HTTPS on both pages.

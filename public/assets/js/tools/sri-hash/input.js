@@ -70,12 +70,15 @@ export async function readBoundedResponse(response, maxBytes = MAX_RESOURCE_BYTE
 }
 
 /** Fetching occurs only following the user's explicit Generate action. */
-export async function fetchResourceBytes(value, {
-  fetchImpl = globalThis.fetch,
-  maxBytes = MAX_RESOURCE_BYTES,
-  timeoutMs = DEFAULT_TIMEOUT_MS,
-  signal,
-} = {}) {
+export async function fetchResourceBytes(
+  value,
+  {
+    fetchImpl = globalThis.fetch,
+    maxBytes = MAX_RESOURCE_BYTES,
+    timeoutMs = DEFAULT_TIMEOUT_MS,
+    signal,
+  } = {},
+) {
   const url = validateHttpsUrl(value);
   if (typeof fetchImpl !== 'function') {
     throw new SriError('NETWORK', 'Browser fetch is unavailable.');
@@ -108,13 +111,19 @@ export async function fetchResourceBytes(value, {
     return { bytes, url, contentType: response.headers?.get('content-type') || '' };
   } catch (error) {
     if (timedOut) {
-      throw new SriError('TIMEOUT', 'The request timed out before the resource could be read.', { cause: error });
+      throw new SriError('TIMEOUT', 'The request timed out before the resource could be read.', {
+        cause: error,
+      });
     }
     if (controller.signal.aborted || signal?.aborted) {
       throw new SriError('CANCELLED', 'The request was cancelled.', { cause: error });
     }
     if (error instanceof SriError) throw error;
-    throw new SriError('NETWORK', 'The resource could not be fetched. CORS, a redirect, or a network problem may be responsible.', { cause: error });
+    throw new SriError(
+      'NETWORK',
+      'The resource could not be fetched. CORS, a redirect, or a network problem may be responsible.',
+      { cause: error },
+    );
   } finally {
     clearTimeout(timeout);
     signal?.removeEventListener('abort', forwardAbort);

@@ -9,6 +9,12 @@ describe('clipboard helper', () => {
   });
   it('reports denied or absent clipboard access', async () => {
     await expect(copyPlainText('hello', null)).rejects.toThrow('unavailable');
-    await expect(copyPlainText('hello', { writeText: async () => { throw new Error('denied'); } })).rejects.toThrow('denied');
+    await expect(
+      copyPlainText('hello', {
+        writeText: async () => {
+          throw new Error('denied');
+        },
+      }),
+    ).rejects.toThrow('denied');
   });
 });
